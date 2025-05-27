@@ -1,0 +1,269 @@
+﻿#pragma once
+#include <iostream>
+#include <vector>
+#include <string>
+#include "Skill.h"
+#include "Item.h"
+#include "Inventory.h"
+#include "board.h"
+using namespace std;
+
+class Player {
+    vector<Monster> team;
+    Inventory inventory;
+    int active_index = 0;
+
+public:
+    Player() {
+        Monster mon1 = Monster("계곡고래", 35, 35, '@', 12, 0, 0, 1);
+        mon1.set_skill();
+        team.push_back(mon1);
+        Monster mon2 = Monster("화산재떨이", 39, 39, '<', 10, 0, 0, 1);
+        mon2.set_skill();
+        team.push_back(mon2);
+        Monster mon3 = Monster("나뭇잎아몬드", 39, 39, '#', 10, 0, 0, 1);
+        mon3.set_skill();
+        team.push_back(mon3);
+
+        inventory.addItem(Item("상처약", ItemType::Heal, 20, 3));
+        inventory.addItem(Item("힘의알", ItemType::Buff, 5, 1));
+    }
+
+    Monster& getActiveMonster() {
+        return team[active_index];
+    }
+
+    void printActiveMonsterStatus() {
+        Monster& mon = getActiveMonster();
+
+        if (mon.get_type() == '@') print_Ascii(monster1_view);
+        else if (mon.get_type() == '<') print_Ascii(monster2_view);
+        else print_Ascii(monster3_view);
+
+        cout << "\n[현재 몬스터 상태]\n";
+        cout << "[" << mon.get_type() << "] ";
+
+        cout << mon.get_name() << " | HP: " << mon.get_hp() << " / " << mon.get_max_hp();
+        cout << " | 공격력: " << mon.get_dmg();
+        cout << " | 마나: " << mon.get_mpcost();
+        cout << " | 레벨: " << mon.get_level() << "\n";
+        cout << endl;
+    }
+
+
+    void printEnemyStatus(Monster& enemy) {
+        print_Ascii(enemy_view);
+        cout << "\n[상대 몬스터 상태]\n";
+        cout << "[" << enemy.get_type() << "] ";
+        cout << enemy.get_name() << " | HP: " << enemy.get_hp() << " / " << enemy.get_max_hp();
+        cout << " | 공격력: " << enemy.get_dmg();
+        cout << " | 속성공격 까지 남은 공격: " << enemy.get_cooltime();
+        cout << " | 레벨: " << enemy.get_level() << "\n";
+    }
+
+    void commandAttack(Monster& enemy) {
+        auto& mon = getActiveMonster();
+        if (mon.isFainted()) {
+            cout << mon.get_name() << "은(는) 기절했습니다. 공격할 수 없습니다.\n";
+            return;
+        }
+        cout << "\n" << mon.get_name() << "의 스킬 목록:\n";
+        mon.printSkills();
+        cout << "\n";
+
+        int choice;
+        cout << "사용할 스킬 번호를 입력하세요: ";
+        cin >> choice;
+        for (int i = 2; i < 6; i++)
+        {
+            if (choice == i)
+            {
+                choice = mon.get_skill(i - 2);
+            }
+        }
+        useSkill(choice, mon, enemy);
+    }
+
+    void switchMonster(int index) {
+
+        if (index < 0 || index >= team.size()) {
+            cout << "\n" << "잘못된 몬스터 번호입니다.\n";
+            return;
+        }
+        if (team[index].isFainted()) {
+            cout << "\n" << "해당 몬스터는 기절했습니다.\n";
+            index = 0;
+            switchMonster(index);
+        }
+        active_index = index;
+        cout << "\n" << team[active_index].get_name() << "을(를) 내보냈습니다!\n";
+    }
+
+    bool playerTurn(Monster& enemy, Player& player) {
+        printActiveMonsterStatus();
+        printEnemyStatus(enemy);
+        int cmd;
+        while (true) {
+            printActionMenu();
+            cin >> cmd;
+            if (cmd >= 1 && cmd <= 4) break;
+            cout << "\n" << "잘못된 입력입니다. 다시 선택하세요.\n";
+        }
+        return executeCommand(cmd, enemy, player);
+    }
+
+    bool executeCommand(int cmd, Monster& enemy, Player& player) {
+        switch (cmd) {
+        case 1:
+            commandAttack(enemy);
+            break;
+        case 2:
+            useItem();
+            break;
+        case 3: {
+            printTeam();
+            int idx;
+            cout << "\n" << "교체할 몬스터 번호를 입력하세요: ";
+            cin >> idx;
+            switchMonster(idx - 1);
+            break;
+        }
+        case 4:
+            if (attemptEscape()) {
+                cout << "\n" << "도망에 성공했습니다!\n";
+                return false;
+            }
+            else {
+                cout << "\n" << "도망에 실패했습니다!\n";
+            }
+            break;
+        default:
+            cout << "\n" << "잘못된 입력입니다.\n";
+            break;
+        }
+        enemyTurn(enemy, player);
+        return true;
+    }
+
+    void enemyTurn(Monster& enemy, Player& player) {
+        if (enemy.isFainted()) {
+            cout << enemy.get_name() << "은(는) 기절해 행동할 수 없습니다.\n";
+            return;
+        }
+
+        Monster& target = player.getActiveMonster();
+
+        cout << "\n야생 " << enemy.get_name() << "의 차례입니다!\n";
+        auto atk = enemy.attack(target);
+
+        target.set_hp(target.get_hp() - atk.damage);
+        if (target.get_hp() <= 0) {
+            target.set_hp(0);
+            target.set_fainted(true);
+            cout << target.get_name() << "이(가) 기절했습니다!\n";
+        }
+
+        cout << enemy.get_name() << "의 공격! ";
+        if (atk.type == 'n')
+            cout << "일반 공격으로 ";
+        else
+            cout << atk.type << " 속성 스킬로 ";
+
+        cout << atk.damage << "의 데미지를 입혔습니다! (남은 체력: " << target.get_hp() << ")\n";
+    }
+
+    void printActionMenu() {
+        cout << "\n===== 행동 선택 =====\n";
+        cout << "1. 공격\n";
+        cout << "2. 아이템 사용\n";
+        cout << "3. 몬스터 교체\n";
+        cout << "4. 도망\n";
+        cout << "=====================\n";
+        cout << "명령을 선택하세요: ";
+    }
+
+    void printTeam() {
+        cout << "\n[보유 몬스터 목록]\n";
+        for (int i = 0; i < team.size(); ++i) {
+            Monster& mon = team[i];
+            cout << i + 1 << ". " << "[" << mon.get_type() << "] " << mon.get_name()
+                << " | HP: " << mon.get_hp() << " / " << mon.get_max_hp();
+            if (i == active_index) cout << "  (전투 중)";
+            if (mon.isFainted()) cout << "  [기절]";
+            cout << "\n";
+        }
+    }
+
+    bool attemptEscape() {
+        int chance = rand() % 100;
+        return chance < 50;
+    }
+
+    void useSkill(int index, Monster& mon, Monster& target) {
+        if (index == 1) {
+            cout << "\n" << mon.get_name() << "의 일반 공격!\n";
+            mon.set_mpcost(mon.get_mpcost() + 1);
+            takeDamage(mon.get_dmg(), index, mon, target);
+        }
+        else if (index == 10) {
+            cout << "\n" << mon.get_name() << "의 거품광선!\n";
+            takeDamage(mon.get_dmg(), index, mon, target);
+        }
+        else if (index == 11) {
+            cout << "\n" << mon.get_name() << "의 불공!\n";
+            takeDamage(mon.get_dmg(), index, mon, target);
+        }
+        else if (index == 12) {
+            cout << "\n" << mon.get_name() << "의 풀채찍!\n";
+            takeDamage(mon.get_dmg(), index, mon, target);
+        }
+    }
+
+    void takeDamage(int dmg, int skillnum, Monster& mon, Monster& target) {
+        double origin_hp = target.get_hp();
+        if (skillnum == 1) {
+            target.set_hp(target.get_hp() - dmg);
+        }
+        else if (skillnum == 10) {
+            bubblebeam(mon, target);
+        }
+        else if (skillnum == 11) {
+            fireball(mon, target);
+        }
+        else if (skillnum == 12) {
+            grasswhip(mon, target);
+        }
+
+        if (target.get_hp() <= 0) {
+            target.set_hp(0);
+            target.set_fainted(true);
+            cout << "\n" << target.get_name() << "이(가) 기절했습니다!\n";
+        }
+        else {
+            cout << "\n" << target.get_name() << "이(가) " << origin_hp - target.get_hp() << "의 데미지를 입었습니다! (남은 체력: " << target.get_hp() << ")\n";
+        }
+    }
+    bool hasAliveMonster() {
+        for (auto& mon : team) {
+            if (!mon.isFainted()) return true;
+        }
+        return false;
+    }
+
+    Monster& getMonster(int index) {
+        return team[index];
+    }
+
+    int teamSize() const {
+        return team.size();
+    }
+    void printInventory() {
+        inventory.printInventory();
+    }
+    void useItem() {
+        inventory.use(*this);
+    }
+    Inventory& getInventory() {
+        return inventory;
+    }
+};
