@@ -15,7 +15,7 @@ class Player {
 
 public:
     Player() {
-        Monster mon1 = Monster("계곡고래", 35, 35, '@', 12, 0, 0, 1);
+        Monster mon1 = Monster("계곡고래", 35, 35, '@', 120, 0, 0, 1);
         mon1.set_skill();
         team.push_back(mon1);
         Monster mon2 = Monster("화산재떨이", 39, 39, '<', 10, 0, 0, 1);

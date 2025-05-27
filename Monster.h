@@ -20,7 +20,7 @@ class Monster {
     double max_hp;
     int skill[4];
 public:
-    Monster(string name, double hp, double max_hp, char type, double dmg, int cooltime, int mpcost, int level) {
+    Monster(string name=0, double hp=0, double max_hp=0, char type=0, double dmg=0, int cooltime=0, int mpcost=0, int level=0) {
         this->name = name;
         this->hp = hp;
         this->type = type;
@@ -135,5 +135,23 @@ public:
             cooltime -= 1;
             return x;
         }
+    }
+    Monster& operator=(const Monster& other) {
+        if (this == &other) return *this; // 자기 자신과의 대입 방지
+
+        name = other.name;
+        hp = other.hp;
+        type = other.type;
+        dmg = other.dmg;
+        cooltime = other.cooltime;
+        level = other.level;
+        mpcost = other.mpcost;
+        fainted = other.fainted;
+        max_hp = other.max_hp;
+        for (int i = 0; i < 4; i++) {
+            skill[i] = other.skill[i];
+        }
+
+        return *this;
     }
 };
