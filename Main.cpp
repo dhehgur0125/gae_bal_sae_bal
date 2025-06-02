@@ -4,45 +4,92 @@
 #include <cstdlib>
 #include <ctime>
 
+using namespace std;
+
 void normalStage(Player& player, int stageNum);
 void itemOrHealStage(Player& player);
 void bossStage(Player& player, int stageNum);
+void restStage(Player& player, int stageNum);
 
 int main() {
     srand(time(0));
     function_game_start();
 
     Player player;
-
-    for (int stage = 1; stage <= 12; ++stage) {
-        string stage_name = "암흑의 숲";
-        if (stage <= 4)
+    string stage_name = "암흑의 숲";
+    for (int stage = 1; stage <= 15; ++stage) {
+        if (stage <= 5)
             stage_name = "암흑의 숲";
-        else if (stage > 4 && stage <= 8)
+        else if (stage > 5 && stage <= 10)
             stage_name = "더러워진 바닷가";
         else
             stage_name = "시공간이 일그러진 바위산";
         cout << "\n===== " << stage_name<<"  ||  스테이지 " << stage << " 시작 ===== \n";
         Sleep(1500);
 
-        if (stage % 4 == 0) {
+        if (stage % 5 == 0) {
             bossStage(player, stage);
         }
-        else if (stage % 4 == 3) {
+        else if (stage % 5 == 4 && stage != 1 && stage != 6 && stage != 11) {
             itemOrHealStage(player);
+        }
+        else if (stage % 5 == 1)
+        {
+            restStage(player, stage);
         }
         else {
             normalStage(player, stage);
         }
 
         if (!player.hasAliveMonster()) {
-            cout << "모든 몬스터가 기절했습니다. 게임 오버!\n";
-            function_game_over();
-            return 0;
+            cout << "모든 몬스터가 기절했습니다. \n";
+            Sleep(1500);
+
+            int recoveryStage = 1;
+            if (stage >= 1 && stage <= 5)
+                recoveryStage = 1;
+            else if (stage >= 6 && stage <= 10)
+                recoveryStage = 6;
+            else
+                recoveryStage = 11;
+
+            cout << "⚡ 회복 스테이지(" << recoveryStage << ")로 이동합니다...\n";
+            Sleep(1500);
+            restStage(player, recoveryStage);
+
+            if (!player.hasAliveMonster()) {
+                cout << "기적은 일어나지 않았습니다... 게임 오버!\n";
+                function_game_over();
+                return 0;
+            }
+
+            if (stage <= 5) {
+                Sleep(2000);
+                stage = 1; // → 다음 루프에서 ++되어 1부터 다시 시작됨
+            }
+            else if (stage >= 6 && stage <= 10)
+            {
+                Sleep(2000);
+                stage = 7;
+            }
+            else
+            {
+                Sleep(2000);
+                stage = 12;
+            }
+
+            continue;
         }
 
         cout << "\n===== " << stage_name << "  ||  스테이지 " << stage << " 클리어!\n";
-        player.getActiveMonster().levelUp(); //레벨업 Monster.h 참고
+        if (player.get_run() == true) 
+        { 
+            player.set_run(false);
+        }
+        else 
+        {
+            player.getActiveMonster().levelUp(); 
+        } //레벨업 Monster.h 참고
         Sleep(2000);
         system("cls");
     }
@@ -58,17 +105,17 @@ void normalStage(Player& player, int stageNum) {
     {
         if (rand() % 3 == 0)
         {
-            Monster enemy_1("슬라임", 30 + stageNum * 2, 30 + stageNum * 2, '<', 8, 3, 0, 1);
+            Monster enemy_1("슬라임", 30 + stageNum * 2, 30 + stageNum * 2, '<', 10008, 3, 0, 1);
             enemy = enemy_1;
         }
         else if (rand() % 3 == 1)
         {
-            Monster enemy_2("스파크레인", 30 + stageNum * 2, 30 + stageNum * 2, '#', 8, 3, 0, 1);
+            Monster enemy_2("스파크레인", 30 + stageNum * 2, 30 + stageNum * 2, '#', 10008, 3, 0, 1);
             enemy = enemy_2;
         } 
         else
         {
-            Monster enemy_3("스파키", 30 + stageNum * 2, 30 + stageNum * 2, '@', 8, 3, 0, 1);
+            Monster enemy_3("스파키", 30 + stageNum * 2, 30 + stageNum * 2, '@', 10008, 3, 0, 1);
             enemy = enemy_3;
         }
     }
@@ -202,4 +249,34 @@ void bossStage(Player& player, int stageNum) {
         Sleep(2000);
         system("cls");
     }
+}
+
+void restStage(Player& player, int stageNum) {
+    cout << "\n⚡ 기적의 쉼터에 도착했습니다...\n";
+    Sleep(1500);
+    cout << "찬란한 빛이 아군 몬스터들을 감쌉니다...\n";
+    Sleep(1500);
+
+    bool anyRevived = false;
+
+    for (int i = 0; i < player.teamSize(); ++i) {
+        Monster& mon = player.getMonster(i);
+        if (mon.isFainted()) {
+            mon.set_hp(mon.get_max_hp());         // 체력 100% 회복
+            mon.set_fainted(false);               // 기절 상태 해제
+            anyRevived = true;
+
+            cout << "✨ " << mon.get_name() << "이(가) 완전히 회복되었습니다! (HP: "
+                << (int)mon.get_max_hp() << "/" << (int)mon.get_max_hp() << ")\n";
+            Sleep(1000);
+        }
+    }
+
+    if (anyRevived) {
+        cout << "\n모든 몬스터가 기적적으로 완전히 회복되었습니다! 다시 싸울 준비가 되었습니다!\n";
+    }
+    else {
+        cout << "모든 몬스터가 이미 살아 있습니다. 회복할 필요가 없습니다.\n";
+    }
+    Sleep(2000);
 }

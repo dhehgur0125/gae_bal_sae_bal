@@ -13,7 +13,7 @@ class Player {
     vector<Monster> team;
     Inventory inventory;
     int active_index = 0;
-
+    bool run = false;
 public:
     Player() {
         Monster mon1 = Monster("계곡고래", 35, 35, '@', 120, 0, 0, 1);
@@ -28,6 +28,16 @@ public:
 
         inventory.addItem(Item("상처약", ItemType::Heal, 20, 3));
         inventory.addItem(Item("힘의알", ItemType::Buff, 5, 1));
+    }
+
+    void set_run(bool run)
+    {
+        this->run = run;
+    }
+
+    bool get_run()
+    {
+        return run;
     }
 
     Monster& getActiveMonster() {
@@ -110,6 +120,13 @@ public:
             system("cls");
             playerTurn(enemy, player);
         }
+        if (active_index == index)
+        {
+            cout << "\n이미 출전 중입니다.\n";
+            Sleep(1500);
+            system("cls");
+            playerTurn(enemy, player);
+        }
 
         active_index = index;
         cout << "\n" << team[active_index].get_name() << "을(를) 내보냈습니다!\n";
@@ -147,6 +164,7 @@ public:
         case 4:
             if (attemptEscape()) {
                 cout << "\n" << "도망에 성공했습니다!\n";
+                run = true;
                 return false;
             }
             else {
@@ -203,7 +221,7 @@ public:
         for (int i = 0; i < team.size(); ++i) {
             Monster& mon = team[i];
             cout << i + 1 << ". " << "[" << mon.get_type() << "] " << mon.get_name()
-                << " | HP: " << mon.get_hp() << " / " << mon.get_max_hp();
+                << " | HP: " << mon.get_hp() << " / " << mon.get_max_hp()<< " | 레벨:" << mon.get_level();
             if (i == active_index) cout << "  (전투 중)";
             if (mon.isFainted()) cout << "  [기절]";
             cout << "\n";
