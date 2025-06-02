@@ -22,7 +22,7 @@ public:
 
     void printInventory() const;
 
-    void use(Player& player);
+    void use(Player& player, int choice);
 
     bool isEmpty() const {
         return items.empty();

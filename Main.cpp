@@ -124,7 +124,7 @@ void normalStage(Player& player, int stageNum) {
 
                 if (newIdx >= 0 && newIdx < player.teamSize() &&
                     !player.getMonster(newIdx).isFainted()) {
-                    player.switchMonster(newIdx);
+                    player.switchMonster(newIdx, enemy, player);
                     break;
                 }
                 cout << "잘못된 선택입니다. 다시 입력하세요.\n";
@@ -193,7 +193,7 @@ void bossStage(Player& player, int stageNum) {
 
                 if (newIdx >= 0 && newIdx < player.teamSize() &&
                     !player.getMonster(newIdx).isFainted()) {
-                    player.switchMonster(newIdx);
+                    player.switchMonster(newIdx, boss, player);
                     break;
                 }
                 cout << "잘못된 선택입니다. 다시 입력하세요.\n";

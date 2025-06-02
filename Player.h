@@ -6,6 +6,7 @@
 #include "Item.h"
 #include "Inventory.h"
 #include "board.h"
+#include <Windows.h>
 using namespace std;
 
 class Player {
@@ -61,7 +62,7 @@ public:
         cout << " | 레벨: " << enemy.get_level() << "\n";
     }
 
-    void commandAttack(Monster& enemy) {
+    void commandAttack(Monster& enemy, Player player) {
         auto& mon = getActiveMonster();
         if (mon.isFainted()) {
             cout << mon.get_name() << "은(는) 기절했습니다. 공격할 수 없습니다.\n";
@@ -81,20 +82,35 @@ public:
                 choice = mon.get_skill(i - 2);
             }
         }
+        if (choice == 6)
+        {
+            system("cls");
+            playerTurn(enemy, player);
+        }
         useSkill(choice, mon, enemy);
     }
 
-    void switchMonster(int index) {
+    void switchMonster(int index, Monster& enemy, Player& player) {
 
+        if (index == 3)
+        {
+            system("cls");
+            playerTurn(enemy, player);
+        }
         if (index < 0 || index >= team.size()) {
             cout << "\n" << "잘못된 몬스터 번호입니다.\n";
-            return;
+            Sleep(1500);
+            system("cls");
+            playerTurn(enemy, player);
         }
+
         if (team[index].isFainted()) {
             cout << "\n" << "해당 몬스터는 기절했습니다.\n";
-            index = 0;
-            switchMonster(index);
+            Sleep(1500);
+            system("cls");
+            playerTurn(enemy, player);
         }
+
         active_index = index;
         cout << "\n" << team[active_index].get_name() << "을(를) 내보냈습니다!\n";
     }
@@ -115,17 +131,17 @@ public:
     bool executeCommand(int cmd, Monster& enemy, Player& player) {
         switch (cmd) {
         case 1:
-            commandAttack(enemy);
+            commandAttack(enemy, player);
             break;
         case 2:
-            useItem();
+            useItem(enemy, player);
             break;
         case 3: {
             printTeam();
             int idx;
             cout << "\n" << "교체할 몬스터 번호를 입력하세요: ";
             cin >> idx;
-            switchMonster(idx - 1);
+            switchMonster(idx - 1, enemy, player);
             break;
         }
         case 4:
@@ -192,6 +208,7 @@ public:
             if (mon.isFainted()) cout << "  [기절]";
             cout << "\n";
         }
+        cout << "\n" << "4. 뒤로가기\n";
     }
 
     bool attemptEscape() {
@@ -260,8 +277,18 @@ public:
     void printInventory() {
         inventory.printInventory();
     }
-    void useItem() {
-        inventory.use(*this);
+    void useItem(Monster& enemy, Player& player) {
+        int choice;
+        printInventory();
+        cout << "\n사용할 아이템 번호를 선택하세요: ";
+        cin >> choice;
+        choice--;
+        if (choice == 5)
+        {
+            system("cls");
+            playerTurn(enemy, player);
+        }
+        inventory.use(*this, choice);
     }
     Inventory& getInventory() {
         return inventory;

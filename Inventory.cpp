@@ -15,20 +15,16 @@ void Inventory::printInventory() const {
         cout << i + 1 << ". " << item.name
             << " (" << item.power << ") x" << item.count << "\n";
     }
+    cout << "\n" << "6. 뒤로가기\n";
 }
 
-void Inventory::use(Player& player) {
+void Inventory::use(Player& player, int choice) {
     if (items.empty()) {
         cout << "\n아이템이 없습니다.\n";
         return;
     }
 
-    printInventory();
-
-    int choice;
-    cout << "\n사용할 아이템 번호를 선택하세요: ";
-    cin >> choice;
-    choice--;
+   
 
     if (choice < 0 || choice >= items.size()) {
         cout << "잘못된 선택입니다.\n";
