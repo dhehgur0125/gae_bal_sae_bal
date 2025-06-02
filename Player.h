@@ -47,7 +47,7 @@ public:
     void printActiveMonsterStatus() {
         Monster& mon = getActiveMonster();
 
-        if (mon.get_type() == '@') print_Ascii(monster1_view);
+        if (mon.get_type() == '@') print_Ascii(whale_2);
         else if (mon.get_type() == '<') print_Ascii(monster2_view);
         else print_Ascii(monster3_view);
 
