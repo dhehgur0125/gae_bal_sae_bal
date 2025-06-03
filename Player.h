@@ -16,7 +16,7 @@ class Player {
     bool run = false;
 public:
     Player() {
-        Monster mon1 = Monster("계곡고래", 35, 35, '@', 120, 0, 0, 1);
+        Monster mon1 = Monster("계곡고래", 35, 35, '@', 120, 0, 10, 1);
         mon1.set_skill();
         team.push_back(mon1);
         Monster mon2 = Monster("화산재떨이", 39, 39, '<', 10, 0, 0, 1);
@@ -74,10 +74,12 @@ public:
 
     void commandAttack(Monster& enemy, Player player) {
         auto& mon = getActiveMonster();
+        mon.set_skill();
         if (mon.isFainted()) {
             cout << mon.get_name() << "은(는) 기절했습니다. 공격할 수 없습니다.\n";
             return;
         }
+        mon.set_skill();
         cout << "\n" << mon.get_name() << "의 스킬 목록:\n";
         mon.printSkills();
         cout << "\n";
@@ -252,6 +254,30 @@ public:
             cout << "\n" << mon.get_name() << "의 풀채찍!\n";
             takeDamage(mon.get_dmg(), index, mon, target);
         }
+        else if (index == 13) {
+            cout << "\n" << mon.get_name() << "의 워터 제트!!\n";
+            takeDamage(mon.get_dmg(), index, mon, target);
+        }
+        else if (index == 14) {
+            cout << "\n" << mon.get_name() << "의 블레이즈 빔!!\n";
+            takeDamage(mon.get_dmg(), index, mon, target);
+        }
+        else if (index == 15) {
+            cout << "\n" << mon.get_name() << "의 리프 나이프!!\n";
+            takeDamage(mon.get_dmg(), index, mon, target);
+        }
+        else if (index == 16) {
+            cout << "\n" << mon.get_name() << "의 해일!!!\n";
+            takeDamage(mon.get_dmg(), index, mon, target);
+        }
+        else if (index == 17) {
+            cout << "\n" << mon.get_name() << "의 볼케이노!!!\n";
+            takeDamage(mon.get_dmg(), index, mon, target);
+        }
+        else if (index == 18) {
+            cout << "\n" << mon.get_name() << "의 세계수의 힘!!!\n";
+            takeDamage(mon.get_dmg(), index, mon, target);
+        }
     }
 
     void takeDamage(int dmg, int skillnum, Monster& mon, Monster& target) {
@@ -267,6 +293,24 @@ public:
         }
         else if (skillnum == 12) {
             grasswhip(mon, target);
+        }
+        else if (skillnum == 13) {
+            waterjett(mon, target);
+        }
+        else if (skillnum == 14) {
+            blazebeam(mon, target);
+        }
+        else if (skillnum == 15) {
+            leaf_knife(mon, target);
+        }
+        else if (skillnum == 16) {
+            tidal_wave(mon, target);
+        }
+        else if (skillnum == 17) {
+            volcano(mon, target);
+        }
+        else if (skillnum == 18) {
+            the_power_of_the_world_tree(mon, target);
         }
 
         if (target.get_hp() <= 0) {

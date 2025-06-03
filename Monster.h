@@ -37,12 +37,53 @@ public:
         return skill[i];
     }
     void set_skill() {
-        if (level == 1)
-            if (type == '@') {
+        if (level >= 1&& level<4)
+            if (type == '@') 
+            {
                 skill[0] = 10;
             }
             else if (type == '<') skill[0] = 11;
             else skill[0] = 12;
+        else if(level >= 4 && level < 8)
+        {
+            if (type == '@') 
+            {
+                skill[0] = 10;
+                skill[1] = 13;
+            }
+            else if (type == '<') 
+            { 
+                skill[0] = 11;
+                skill[1] = 14; 
+            }
+            else
+            {
+                skill[0] = 12;
+                skill[1] = 15;
+            }
+        }
+        else if (level >= 8)
+        {
+            if (type == '@') 
+            {
+                skill[0] = 10;
+                skill[1] = 13;
+                skill[2] = 16;
+            }
+            else if (type == '<')
+            {
+                skill[0] = 11;
+                skill[1] = 14;
+                skill[2] = 17;
+            }
+
+            else
+            {
+                skill[0] = 12;
+                skill[1] = 15;
+                skill[2] = 18;
+            }
+        }
     }
 
     void printSkills() {
@@ -55,6 +96,24 @@ public:
         }
         else if (skill[0] == 12) {
             cout << "\n" << "2. [#] 풀채찍 | 마나 요구량 : 5\n";
+        }
+        if (skill[1] == 13) {
+            cout << "\n" << "3.  [@] 워터 제트 | 마나 요구량 : 5\n";
+        }
+        else if (skill[1] == 14) {
+            cout << "\n" << "3. [<] 블레이즈 빔 | 마나 요구량 : 5\n";
+        }
+        else if (skill[1] == 15) {
+            cout << "\n" << "3. [#] 리프 나이프 | 마나 요구량 : 5\n";
+        }
+        if (skill[2] == 16) {
+            cout << "\n" << "4.  [@] 해일 | 마나 요구량 : 5\n";
+        }
+        else if (skill[2] == 17) {
+            cout << "\n" << "4. [<] 볼케이노 | 마나 요구량 : 5\n";
+        }
+        else if (skill[2] == 18) {
+            cout << "\n" << "4. [#] 세계수의 힘 | 마나 요구량 : 5\n";
         }
         cout << "\n" << "6. 뒤로가기\n";
     }
