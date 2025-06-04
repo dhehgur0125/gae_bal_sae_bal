@@ -16,13 +16,13 @@ class Player {
     bool run = false;
 public:
     Player() {
-        Monster mon1 = Monster("계곡고래", 35, 35, '@', 120, 0, 10, 1);
+        Monster mon1 = Monster("계곡고래", 3500, 3500, '@', 120, 0, 10, 1);
         mon1.set_skill();
         team.push_back(mon1);
-        Monster mon2 = Monster("화산재떨이", 39, 39, '<', 10, 0, 0, 1);
+        Monster mon2 = Monster("용암재떨이", 3900, 3900, '<', 100, 0, 0, 6);
         mon2.set_skill();
         team.push_back(mon2);
-        Monster mon3 = Monster("나뭇잎아몬드", 39, 39, '#', 10, 0, 0, 1);
+        Monster mon3 = Monster("나뭇잎아몬드", 3900, 3900, '#', 100, 0, 0, 6);
         mon3.set_skill();
         team.push_back(mon3);
 
@@ -47,9 +47,34 @@ public:
     void printActiveMonsterStatus() {
         Monster& mon = getActiveMonster();
 
-        if (mon.get_type() == '@') print_Ascii(whale_2);
-        else if (mon.get_type() == '<') print_Ascii(monster2_view);
-        else print_Ascii(monster3_view);
+        if (mon.get_type() == '@')
+        {
+            if(mon.get_name() == "계곡고래")
+                print_Ascii(whale_1);
+            else if (mon.get_name() == "폭포고래")
+                print_Ascii(whale_2);
+            else if (mon.get_name() == "해일고래")
+                print_Ascii(whale_3);
+        }
+        else if (mon.get_type() == '#')
+        {
+            if (mon.get_name() == "나뭇잎아몬드")
+                print_Ascii(almond_1);
+            else if (mon.get_name() == "수풀아몬드")
+                print_Ascii(almond_2);
+            else if (mon.get_name() == "실바아몬드")
+                print_Ascii(almond_3);
+        }
+        else if (mon.get_type() == '<')
+        {
+            if (mon.get_name() == "용암재떨이")
+                print_Ascii(ashtray_1);
+            else if (mon.get_name() == "화산잿더미")
+                print_Ascii(ashtray_2);
+            else if (mon.get_name() == "잿불제왕")
+                print_Ascii(ashtray_3);
+        }
+            
 
         cout << "\n[현재 몬스터 상태]\n";
         cout << "[" << mon.get_type() << "] ";

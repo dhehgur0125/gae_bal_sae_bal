@@ -105,17 +105,17 @@ void normalStage(Player& player, int stageNum) {
     {
         if (rand() % 3 == 0)
         {
-            Monster enemy_1("슬라임", 30 + stageNum * 2, 30 + stageNum * 2, '<', 10008, 3, 0, 1);
+            Monster enemy_1("슬라임", 30 + stageNum * 2, 30 + stageNum * 2, '<', 8, 3, 0, 1);
             enemy = enemy_1;
         }
         else if (rand() % 3 == 1)
         {
-            Monster enemy_2("스파크레인", 30 + stageNum * 2, 30 + stageNum * 2, '#', 10008, 3, 0, 1);
+            Monster enemy_2("스파크레인", 30 + stageNum * 2, 30 + stageNum * 2, '#', 8, 3, 0, 1);
             enemy = enemy_2;
         } 
         else
         {
-            Monster enemy_3("스파키", 30 + stageNum * 2, 30 + stageNum * 2, '@', 10008, 3, 0, 1);
+            Monster enemy_3("스파키", 30 + stageNum * 2, 30 + stageNum * 2, '@', 8, 3, 0, 1);
             enemy = enemy_3;
         }
     }
