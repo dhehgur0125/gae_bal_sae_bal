@@ -82,7 +82,7 @@ int main() {
         }
 
         cout << "\n===== " << stage_name << "  ||  스테이지 " << stage << " 클리어!\n";
-        if (player.get_run() == true) 
+        if (player.get_run() == true || stage == 1 || stage == 4 || stage == 6 || stage == 9 || stage == 11 || stage == 14) 
         { 
             player.set_run(false);
         }
