@@ -20,7 +20,7 @@ class Monster {
     double max_hp;
     int skill[4];
 public:
-    Monster(string name=0, double hp=0, double max_hp=0, char type=0, double dmg=0, int cooltime=0, int mpcost=0, int level=0) {
+    Monster(string name="0", double hp=0, double max_hp=0, char type='0', double dmg=0, int cooltime=0, int mpcost=0, int level=0) {
         this->name = name;
         this->hp = hp;
         this->type = type;

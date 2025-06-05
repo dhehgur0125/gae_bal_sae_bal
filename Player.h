@@ -7,22 +7,23 @@
 #include "Inventory.h"
 #include "board.h"
 #include <Windows.h>
+
 using namespace std;
 
-class Player {
+class Player{
     vector<Monster> team;
     Inventory inventory;
     int active_index = 0;
     bool run = false;
 public:
     Player() {
-        Monster mon1 = Monster("계곡고래", 3500, 3500, '@', 120, 0, 10, 1);
+        Monster mon1 = Monster("계곡고래", 3500, 3500, '@', 120, 0, 10, 10);
         mon1.set_skill();
         team.push_back(mon1);
-        Monster mon2 = Monster("용암재떨이", 3900, 3900, '<', 100, 0, 0, 6);
+        Monster mon2 = Monster("용암재떨이", 3900, 3900, '<', 100, 0, 10, 10);
         mon2.set_skill();
         team.push_back(mon2);
-        Monster mon3 = Monster("나뭇잎아몬드", 3900, 3900, '#', 100, 0, 0, 6);
+        Monster mon3 = Monster("나뭇잎아몬드", 3900, 3900, '#', 100, 0, 10, 10);
         mon3.set_skill();
         team.push_back(mon3);
 
@@ -88,7 +89,58 @@ public:
 
 
     void printEnemyStatus(Monster& enemy) {
-        print_Ascii(enemy_view);
+        if (enemy.get_name() == "스파키")
+        {
+            print_Ascii(sparky);
+        }
+        else if (enemy.get_name() == "슬라임")
+        {
+            print_Ascii(slime);
+        }
+        else if (enemy.get_name() == "스파크레인")
+        {
+            print_Ascii(sparkrain);
+        }
+        else if (enemy.get_name() == "미카엘")
+        {
+            print_Ascii(micael);
+        }
+        else if (enemy.get_name() == "아이언클래드")
+        {
+            print_Ascii(ironcled);
+        }
+        else if (enemy.get_name() == "파이로스")
+        {
+            print_Ascii(piros);
+        }
+        else if (enemy.get_name() == "네오스")
+        {
+            print_Ascii(neos);
+        }
+        else if (enemy.get_name() == "루시퍼")
+        {
+            print_Ascii(lusiper);
+        }
+        else if (enemy.get_name() == "사이버론")
+        {
+            print_Ascii(ciberon);
+        }
+        else if (enemy.get_name() == "엘리시온")
+        {
+            print_Ascii(elision);
+        }
+        else if (enemy.get_name() == "라이트닝쉐도우")
+        {
+            print_Ascii(lightningshadow);
+        }
+        else if (enemy.get_name() == "메카트론")
+        {
+            print_Ascii(mekatron);
+        }
+        else
+        {
+            print_Ascii(enemy_view);
+        }
         cout << "\n[상대 몬스터 상태]\n";
         cout << "[" << enemy.get_type() << "] ";
         cout << enemy.get_name() << " | HP: " << enemy.get_hp() << " / " << enemy.get_max_hp();
@@ -97,7 +149,7 @@ public:
         cout << " | 레벨: " << enemy.get_level() << "\n";
     }
 
-    void commandAttack(Monster& enemy, Player player) {
+    void commandAttack(Monster& enemy, Player& player) {
         auto& mon = getActiveMonster();
         mon.set_skill();
         if (mon.isFainted()) {
