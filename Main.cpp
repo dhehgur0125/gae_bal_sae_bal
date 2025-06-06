@@ -44,7 +44,7 @@ int main() {
         if (!player.hasAliveMonster()) {
             cout << "모든 몬스터가 기절했습니다. \n";
             Sleep(1500);
-
+            system("cls");
             int recoveryStage = 1;
             if (stage >= 1 && stage <= 5)
                 recoveryStage = 1;
@@ -53,7 +53,7 @@ int main() {
             else
                 recoveryStage = 11;
 
-            cout << "⚡ 회복 스테이지(" << recoveryStage << ")로 이동합니다...\n";
+            cout << "회복 스테이지(" << recoveryStage << ")로 이동합니다...\n";
             Sleep(1500);
             restStage(player, recoveryStage);
 
@@ -203,7 +203,7 @@ void itemOrHealStage(Player& player) {
         std::cout << "아이템 '" << reward.name << "'을(를) 얻었습니다!\n";
     }
     else {
-        cout << "🔹 힐 스테이지! 모든 몬스터가 회복됩니다.\n";
+        cout << "힐 스테이지! 모든 몬스터가 회복됩니다.\n";
         for (int i = 0; i < player.teamSize(); ++i) {
             auto& mon = player.getMonster(i);
             mon.set_hp(mon.get_max_hp());
@@ -266,7 +266,7 @@ void restStage(Player& player, int stageNum) {
             mon.set_fainted(false);               // 기절 상태 해제
             anyRevived = true;
 
-            cout << "✨ " << mon.get_name() << "이(가) 완전히 회복되었습니다! (HP: "
+            cout <<mon.get_name() << "이(가) 완전히 회복되었습니다! (HP: "
                 << (int)mon.get_max_hp() << "/" << (int)mon.get_max_hp() << ")\n";
             Sleep(1000);
         }
