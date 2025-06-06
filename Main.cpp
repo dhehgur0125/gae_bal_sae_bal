@@ -12,7 +12,7 @@ void bossStage(Player& player, int stageNum);
 void restStage(Player& player, int stageNum);
 
 int main() {
-    srand(time(0));
+    srand((unsigned int)time(NULL));
     function_game_start();
 
     Player player;
@@ -24,7 +24,7 @@ int main() {
             stage_name = "더러워진 바닷가";
         else
             stage_name = "시공간이 일그러진 바위산";
-        cout << "\n===== " << stage_name<<"  ||  스테이지 " << stage << " 시작 ===== \n";
+        cout << "\n===== " << stage_name << "  ||  스테이지 " << stage << " 시작 ===== \n";
         Sleep(1500);
 
         if (stage % 5 == 0) {
@@ -45,6 +45,7 @@ int main() {
             cout << "모든 몬스터가 기절했습니다. \n";
             Sleep(1500);
             system("cls");
+
             int recoveryStage = 1;
             if (stage >= 1 && stage <= 5)
                 recoveryStage = 1;
@@ -70,25 +71,25 @@ int main() {
             else if (stage >= 6 && stage <= 10)
             {
                 Sleep(2000);
-                stage = 7;
+                stage = 6;
             }
             else
             {
                 Sleep(2000);
-                stage = 12;
+                stage = 11;
             }
 
             continue;
         }
 
         cout << "\n===== " << stage_name << "  ||  스테이지 " << stage << " 클리어!\n";
-        if (player.get_run() == true || stage == 1 || stage == 4 || stage == 6 || stage == 9 || stage == 11 || stage == 14) 
-        { 
+        if (player.get_run() == true || stage == 1 || stage == 4 || stage == 6 || stage == 9 || stage == 11 || stage == 14)
+        {
             player.set_run(false);
         }
-        else 
+        else
         {
-            player.getActiveMonster().levelUp(); 
+            player.getActiveMonster().levelUp();
         } //레벨업 Monster.h 참고
         Sleep(2000);
         system("cls");
@@ -100,62 +101,62 @@ int main() {
 
 void normalStage(Player& player, int stageNum) {
     // Monster(string name, double hp, double max_hp, char type, double dmg, int cooltime, int mpcost, int level)
-    Monster enemy("0",0,0,0,0,0,0,0);
+    Monster enemy("0", 0, 0, 0, 0, 0, 0, 0);
     if (stageNum <= 4)
     {
         if (rand() % 3 == 0)
         {
-            Monster enemy_1("슬라임", 30 + stageNum * 2, 30 + stageNum * 2, '<', 8, 3, 0, 1);
+            Monster enemy_1("슬라임", 50 + stageNum * 10, 50 + stageNum * 10, '<', 5 + stageNum * 3, 3, 0, stageNum * 1);
             enemy = enemy_1;
         }
         else if (rand() % 3 == 1)
         {
-            Monster enemy_2("스파크레인", 30 + stageNum * 2, 30 + stageNum * 2, '#', 8, 3, 0, 1);
+            Monster enemy_2("스파크레인", 50 + stageNum * 10, 50 + stageNum * 10, '#', 5 + stageNum * 3, 3, 0, stageNum * 1);
             enemy = enemy_2;
-        } 
+        }
         else
         {
-            Monster enemy_3("스파키", 30 + stageNum * 2, 30 + stageNum * 2, '@', 8, 3, 0, 1);
+            Monster enemy_3("스파키", 50 + stageNum * 10, 50 + stageNum * 10, '@', 5 + stageNum * 3, 3, 0, stageNum * 1);
             enemy = enemy_3;
         }
     }
-    else if (stageNum > 4 && stageNum <= 8)
+    else if (stageNum > 5 && stageNum <= 9)
     {
         if (rand() % 3 == 0)
         {
-            Monster enemy_4("아이언클래드", 50 + stageNum * 2, 50 + stageNum * 2, '@', 14, 3, 0, 1);
+            Monster enemy_4("아이언클래드", 50 + stageNum * 10, 50 + stageNum * 10, '@', 5 + stageNum * 3, 3, 0, stageNum * 1);
             enemy = enemy_4;
         }
         else if (rand() % 3 == 1)
         {
-            Monster enemy_5("파이로스", 50 + stageNum * 2, 50 + stageNum * 2, '#', 14, 3, 0, 1);
+            Monster enemy_5("파이로스", 50 + stageNum * 10, 50 + stageNum * 10, '#', 5 + stageNum * 3, 3, 0, stageNum * 1);
             enemy = enemy_5;
         }
         else
         {
-            Monster enemy_6("네오스", 50 + stageNum * 2, 50 + stageNum * 2, '<', 14, 3, 0, 1);
+            Monster enemy_6("네오스", 50 + stageNum * 10, 50 + stageNum * 10, '<', 5 + stageNum * 3, 3, 0, stageNum * 1);
             enemy = enemy_6;
         }
     }
-    else if (stageNum > 8 && stageNum <= 12)
+    else if (stageNum > 10 && stageNum <= 14)
     {
         if (rand() % 3 == 0)
         {
-            Monster enemy_7("사이버론", 70 + stageNum * 2, 70 + stageNum * 2, '#', 20, 3, 0,1);
+            Monster enemy_7("사이버론", 50 + stageNum * 10, 50 + stageNum * 10, '#', 5 + stageNum * 3, 3, 0, stageNum * 1);
             enemy = enemy_7;
         }
         else if (rand() % 3 == 1)
         {
-            Monster enemy_8("엘리시온", 70 + stageNum * 2, 70 + stageNum * 2, '<', 20, 3, 0, 1);
+            Monster enemy_8("엘리시온", 50 + stageNum * 10, 50 + stageNum * 10, '<', 5 + stageNum * 3, 3, 0, stageNum * 1);
             enemy = enemy_8;
         }
         else
         {
-            Monster enemy_9("라이트닝쉐도우", 70 + stageNum * 2, 70 + stageNum * 2, '@', 20, 3, 0, 1);
+            Monster enemy_9("라이트닝쉐도우", 50 + stageNum * 10, 50 + stageNum * 10, '@', 5 + stageNum * 3, 3, 0, stageNum * 1);
             enemy = enemy_9;
         }
     }
-   //Monster enemy("야생몬" + to_string(stageNum), 30 + stageNum * 2, 30 + stageNum * 2, '#', 8, 3, 0, 1);
+    //Monster enemy("야생몬" + to_string(stageNum), 30 + stageNum * 2, 30 + stageNum * 2, '#', 8, 3, 0, 1);
 
     while (!enemy.isFainted()) {
         if (!player.playerTurn(enemy, player)) return;
@@ -169,7 +170,7 @@ void normalStage(Player& player, int stageNum) {
                 cin >> newIdx;
                 --newIdx;
 
-                if (newIdx >= 0 && newIdx < player.teamSize() &&
+                if (newIdx >= 0 && newIdx <= player.teamSize() &&
                     !player.getMonster(newIdx).isFainted()) {
                     player.switchMonster(newIdx, enemy, player);
                     break;
@@ -217,11 +218,18 @@ void itemOrHealStage(Player& player) {
 
 void bossStage(Player& player, int stageNum) {
     string bossName;
-    if (stageNum == 4) bossName = "미카엘";
-    else if (stageNum == 8) bossName = "루시퍼";
+    if (stageNum == 5) bossName = "미카엘";
+    else if (stageNum == 10) bossName = "루시퍼";
     else bossName = "메카트론";
 
-    Monster boss(bossName, 45 + stageNum * 3, 45 + stageNum * 3, '@', 12, 2, 0, 2);
+    Monster boss(bossName, 50 + stageNum * 10, 50 + stageNum * 10, '@', 5 + stageNum * 3, 2, 0, stageNum * 1);
+    if (rand() % 3 == 0)
+        boss.set_type('@');
+    else if (rand() % 3 == 1)
+        boss.set_type('<');
+    else
+        boss.set_type('#');
+
 
     cout << "WARNING!!! 보스 '" << boss.get_name() << "' 등장!\n";
 
@@ -252,26 +260,35 @@ void bossStage(Player& player, int stageNum) {
 }
 
 void restStage(Player& player, int stageNum) {
-    cout << "\n⚡ 기적의 쉼터에 도착했습니다...\n";
+    cout << "\n기적의 쉼터에 도착했습니다...\n";
     Sleep(1500);
     cout << "찬란한 빛이 아군 몬스터들을 감쌉니다...\n";
     Sleep(1500);
 
     bool anyRevived = false;
-
+    int count = 0;
     for (int i = 0; i < player.teamSize(); ++i) {
         Monster& mon = player.getMonster(i);
         if (mon.isFainted()) {
+            count += 1;
             mon.set_hp(mon.get_max_hp());         // 체력 100% 회복
             mon.set_fainted(false);               // 기절 상태 해제
             anyRevived = true;
 
-            cout <<mon.get_name() << "이(가) 완전히 회복되었습니다! (HP: "
+            cout <<  mon.get_name() << "이(가) 완전히 회복되었습니다! (HP: "
                 << (int)mon.get_max_hp() << "/" << (int)mon.get_max_hp() << ")\n";
             Sleep(1000);
         }
     }
-
+    if (count == 3)
+    {
+        for (int i = 0; i < player.teamSize(); ++i) {
+            Monster& mon = player.getMonster(i);
+            mon.levelUp();
+            Sleep(1000);
+        }
+        count = 0;
+    }
     if (anyRevived) {
         cout << "\n모든 몬스터가 기적적으로 완전히 회복되었습니다! 다시 싸울 준비가 되었습니다!\n";
     }
@@ -279,4 +296,5 @@ void restStage(Player& player, int stageNum) {
         cout << "모든 몬스터가 이미 살아 있습니다. 회복할 필요가 없습니다.\n";
     }
     Sleep(2000);
+    system("cls");
 }

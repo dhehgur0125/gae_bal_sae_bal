@@ -17,13 +17,13 @@ class Player{
     bool run = false;
 public:
     Player() {
-        Monster mon1 = Monster("계곡고래", 3500, 3500, '@', 120, 0, 10, 10);
+        Monster mon1 = Monster("계곡고래", 36, 36, '@', 12, 0, 0, 1);
         mon1.set_skill();
         team.push_back(mon1);
-        Monster mon2 = Monster("용암재떨이", 3900, 3900, '<', 100, 0, 10, 10);
+        Monster mon2 = Monster("용암재떨이", 36, 36, '<', 12, 0, 0, 1);
         mon2.set_skill();
         team.push_back(mon2);
-        Monster mon3 = Monster("나뭇잎아몬드", 3900, 3900, '#', 100, 0, 10, 10);
+        Monster mon3 = Monster("나뭇잎아몬드", 36, 36, '#', 12, 0, 0, 1);
         mon3.set_skill();
         team.push_back(mon3);
 
@@ -310,13 +310,12 @@ public:
 
     bool attemptEscape() {
         int chance = rand() % 100;
-        return chance < 50;
+        return chance < 30;
     }
 
     void useSkill(int index, Monster& mon, Monster& target) {
         if (index == 1) {
             cout << "\n" << mon.get_name() << "의 일반 공격!\n";
-            mon.set_mpcost(mon.get_mpcost() + 1);
             takeDamage(mon.get_dmg(), index, mon, target);
         }
         else if (index == 10) {
@@ -360,7 +359,7 @@ public:
     void takeDamage(int dmg, int skillnum, Monster& mon, Monster& target) {
         double origin_hp = target.get_hp();
         if (skillnum == 1) {
-            target.set_hp(target.get_hp() - dmg);
+            attack(mon, target);
         }
         else if (skillnum == 10) {
             bubblebeam(mon, target);

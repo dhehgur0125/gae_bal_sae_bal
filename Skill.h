@@ -5,6 +5,9 @@
 
 using namespace std;
 void skill_f(char skilltype, double skilldmg, Monster& mon, Monster& enermy);
+
+void attack(Monster& mon, Monster& enermy);
+
 void bubblebeam(Monster& mon, Monster& enermy);
 
 void fireball(Monster& mon, Monster& enermy);
