@@ -5,6 +5,7 @@ void print_Ascii(void (*artFunc)(std::wstring&));
 
 void AsciiArt(std::wstring& art);
 void game_start(std::wstring& art);
+void game_clear(std::wstring& art);
 void game_over(std::wstring& art);
 void enemy_view(std::wstring& art);
 void whale_1(std::wstring& art);

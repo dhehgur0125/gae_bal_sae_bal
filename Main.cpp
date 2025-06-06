@@ -94,7 +94,7 @@ int main() {
         Sleep(2000);
         system("cls");
     }
-
+    print_Ascii(game_clear);
     cout << "\n모든 스테이지를 클리어했습니다! 축하합니다!\n";
     return 0;
 }
