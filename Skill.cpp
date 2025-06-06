@@ -1,4 +1,7 @@
-﻿#include "Skill.h"
+﻿#pragma once
+#include<iostream>
+#include<string>
+#include"Monster.h"
 
 void skill_f(char skilltype, double skilldmg, Monster& mon, Monster& enermy) {
     if ((enermy.get_type() == '@' && skilltype == '<') ||
@@ -50,9 +53,6 @@ void grasswhip(Monster& mon, Monster& enermy) {
 
 }
 
-void heal(Monster& mon) {
-    mon.set_hp(mon.get_hp() + 10);
-}
 //13
 void waterjett(Monster& mon, Monster& enemy)
 {

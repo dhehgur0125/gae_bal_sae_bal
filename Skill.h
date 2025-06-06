@@ -11,8 +11,6 @@ void fireball(Monster& mon, Monster& enermy);
 
 void grasswhip(Monster& mon, Monster& enermy);
 
-void heal(Monster& mon);
-
 void waterjett(Monster& mon, Monster& enemy);
 
 void tidal_wave(Monster& mon, Monster& enemy);
